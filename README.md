@@ -1,1 +1,1 @@
-# CodeBuddy-Bot
+# CodeBuddy
