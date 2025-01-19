@@ -1,0 +1,14 @@
+{
+    "type": "service_account",
+    "project_id": "urop-telegram-chatbot",
+    "private_key_id": "3209af851f5a2b15d0ac1f25ba409d3566d5e988",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCRmrUB++pjC2ZR\nDsVPxBThXm79nIJmuvE4fMsO+BQhCjGfxIVbOVA+WXtASKNlK6FZ9awb9TnTx33l\nCHD1b9u3pEYMgaPYHOVkcFxLppyvAbd/PeawoG8WjSJq+r/zj6vVKOGM6UbbWFOy\nIONMFhjnwvbDCq24CK+j9uhRvTxBCnO/Aq2AhKmSl7CaAmG1VgIfF2u6+Dnc6AZu\ntRGULuN0/AUawLzxDdaqCE7vfAzxa85zvFHDj8+tzRypBKiRPl1jNFBVvAsfonob\nwUfi8f5zhOGA2nvfjGitZpuqUz+CJdfv4GXrKBLVrqJSDmMfm85cDGV8hpgoHzKm\nbLMkVAm9AgMBAAECggEAAIBZios1MGgepGgk8nReD19FieawZZgpMnpDh2aqnb6C\nPebtqqBqOqdmOZTGc0JmM4AZZUiVOA8iINgZmM7CIUIV4lR5SEo5LqewZFZLiH1n\nW1nO4eF7ixwAoqurCN9VcSN15gf7ms/ADLH49mRxFi3hWaSUxTh1Gl8ZnQZwyayK\nimjebwHm/z6zgBS1erDE+1S2YnRTrlOYCv+prLAImWFihA0dwu3zj7VOYBmW1pPX\nnji+38BvXMZoUWrZl2ZnzadqtS9TFTJqBhjGCVsgwfU1g0gD10WDEfzaPxQmv0+D\nSHpFuf1BhFhrh1JMVx+kqWz3/Vp2q3PCmqpkdF6bRQKBgQC1EuF6bRXgY/B0qBKv\npVM8LPaLBF8qJNxt5ouH+md/W2LuEor5apPnva0AUYR1ZHxB4oSIcU37lq0wXRCE\nVvp9vVIgxb5PgKo7/0nLwhjrWGflT4Y6okOvZKBrjorz+HW4pXbRQdUh/VYbeUZF\niYYjcOO7I7Sc50YTW47shbSPawKBgQDN2o3nNdclqMGdX7zEhDIIwzU97J71Q6UU\nRG5Z75G/hKEmCoShEBECmC6Xg+ptY1Mn6OlnMoViyd4Fc9iHBDHe0wKsbAgEY2qR\nenmaO4JaGUKkqhzobgqzC5pvtr8J+VJtMrc+57yfno/gwkozav7YN5V59TvViPaN\nmqhSbELddwKBgQCbkbcrKeGrwfFrKKO1SMM0ZiUD1yOz36uKuJKUpyyYnPloNYI1\nO74LUkj6hw7YlRa0vFrFpyMqzo/Jh4uTR+86bJfNFFenkpGvrmvGpeInAPNyblqS\nsaqZXEj/X54+ce8iTvbAXmExLKj4Pb+EKt2WQX1G4SxhycnJA9bNmypANQKBgGdx\njV+DkcLt46WWp4BFQfNfTRD6KALt5DWkEaQGHEKWfnhkTrO1JCcenEMtWg9wGyhy\nBWADZj33XSd2SHfIptrnRG+qtfimkLXcSuEzSFTIXtHqXi56pcvFZ+z9c1Cqxj3z\nf1wQDZxUjM6QM8NU4A19GRM5JcEvW15bOnx4xL0PAoGAL1ev81Z11I9Hx/VLToqE\n47eVPXsnNrM9+wsUl890DOWN7G+C4ARHbr7xRVuVwEkgX6szd7U6QA/GRPL12zIg\nvoA8YcDcolXj9BKvshuXI702JTrk2eyCioHSderhz48KCh52AFZYdjfb7HaHidGf\nNZBSeCzfG/ULohL/g7REmss=\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-rvtdl@urop-telegram-chatbot.iam.gserviceaccount.com",
+    "client_id": "108928779375842545414",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rvtdl%40urop-telegram-chatbot.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
+  

@@ -148,13 +148,20 @@ CONVERSATION_INFORMATION = {}
 
 def handle_start_command_python_function(update, context):
     print("Start command received")  # Add this line to verify if the command is being received
+
+    username = update.message.from_user.username or update.message.from_user.first_name
+    user_id = update.message.from_user.id
     
-    # Reset the conversation information
+    # Clear conversation information (if applicable)
     CONVERSATION_INFORMATION.clear()
 
-    # Sending an image of a Telegram Chatbot teaching assistant
-    image = requests.get('https://static05.cminds.com/wp-content/uploads/WP_Telegram_Bot_Plugin_Illustravive_Banner-1024x300.jpg').content
-    update.message.reply_media_group(media=[telegram.InputMediaPhoto(image, caption="""👋 Hello there! Welcome to your friendly Teaching Assistant Telegram Bot, powered by the magic of Retrieval-Augmented Generation (RAG) by Snowflake Cortex Search and Mistral LLM! ❄️\n\nYou're now connected with the Teaching Assistant for First Beginner Programming Course! 🎓📘\n(Psst... Just so you know, this conversation will be recorded for your instructors to help improve your learning!)\n\nFirst things first, could you kindly enter your student ID so we can get started? 📝""")])
+    # Send the response with MarkdownV2
+    message = f"""Hello [@{username}](tg://user?id={user_id})\!\nI am CodeBuddy\, your friendly teaching assistant for your programming course\, powered by the magic of Retrieval\-Augmented Generation \(RAG\) by Snowflake Cortex Search and Mistral LLM\! ❄️ \n\nTo begin\, please enter your student ID\."""
+
+    update.message.reply_text(
+        message,
+        parse_mode="MarkdownV2"
+    )
     
     return ASK_STUDENTID
 
@@ -188,7 +195,7 @@ def handle_ask_studentid_messages_python_function(update, context):
             keyboard_buttons.append([telegram.KeyboardButton(i)])
 
     update.message.reply_text(f"""
-                              Nice to meet you, student ID: {CONVERSATION_INFORMATION['student_id']}!\n\nNow, let's get down to business. Which assignment would you like to submit today? 📋"
+                              Which assignment would you like to submit?
                               """
                               , reply_markup=telegram.ReplyKeyboardMarkup(keyboard_buttons, one_time_keyboard=True))
     
@@ -210,8 +217,8 @@ def handle_ask_assignment_messages_python_function(update, context):
         if assignment['assignment_name'] == CONVERSATION_INFORMATION['assignment']:
             extracted_assignment_link = assignment['assignment_link']
 
-    update.message.reply_text(f"""
-                               📝 You picked {CONVERSATION_INFORMATION['assignment']}.\n\nHere’s everything you need to know about this assignment: {extracted_assignment_link}\n\nReady to proceed? Let me know what you’d like to do next:\n\n\nIf you'd like to submit for another assignment, feel free to restart with the /start command anytime! I’m here whenever you need me! 😁🤖
+    update.message.reply_text(f"""                               
+                               To refresh your memory, here is the question for {CONVERSATION_INFORMATION['assignment']}: {extracted_assignment_link}
                                """
                                , reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True))
 
@@ -231,8 +238,8 @@ def handle_ask_code_submission_messages_python_function(update, context):
         inline_keyboard_buttons = [[telegram.InlineKeyboardButton("Submit code", callback_data="submit_code")], [telegram.InlineKeyboardButton("Restart", callback_data="restart")]]
 
         update.message.reply_text(f"""
-                                🎉 Thanks for sharing your code! Here's a quick recap of everything you've provided:\n\n📌 Student ID: {CONVERSATION_INFORMATION['student_id']}\n📌 Assignment: {CONVERSATION_INFORMATION['assignment']}\n📌 Code:\n<pre><code>{CONVERSATION_INFORMATION['code_submitted']}</code></pre>\n\nLooking good? Ready to submit it for evaluation? 😄
-                                """, reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True), parse_mode="HTML")
+                                   Code received! Please confirm your submission:\n- Student ID: {CONVERSATION_INFORMATION['student_id']}\n- Assignment: {CONVERSATION_INFORMATION['assignment']}\n- Submitted Code:\n<pre><code>{CONVERSATION_INFORMATION['code_submitted']}</code></pre>
+                                   """, reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True), parse_mode="HTML")
 
 
 # Displaying response 
@@ -248,19 +255,11 @@ def telegram_chatbot_response_to_code_submission_python_function(update, context
     if response.status_code == 200:
         # Appending the generated response to the 'conversation_history_and_other_data' 
         conversation_history_and_other_data["messages"].append({"content": json_data['text'], "role": "assistant"})
-        print(f'Hello {conversation_history_and_other_data}')
 
-        update.message.reply_text("""
-                                  ⏳ Give me a second while I work my magic and analyze your submission… 🙏 
-                                  """)
-        time.sleep(3)
-        update.message.reply_text(f"""
-                                  🎉 All done! Here’s the feedback for your submission to {CONVERSATION_INFORMATION['assignment']}.<pre><code>{json_data['text']}</code></pre>(Your submission has been recorded)""", parse_mode="HTML")     
-        
         inline_keyboard_buttons = [[telegram.InlineKeyboardButton("Restart", callback_data="restart")]]
         update.message.reply_text(f"""
-                                  If you'd like to submit for another assignment, feel free to click restart! I’m here whenever you need me! 😁🤖
-                                  """, reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True))     
+                                  Here’s my feedback for your submission to {CONVERSATION_INFORMATION['assignment']}.<pre><code>{json_data['text']}</code></pre>(Your submission has been recorded into the Streamlit website: http://websitenotready which is only accessible by your course instructors)
+                                  """, parse_mode="HTML", reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True))    
         
 
         # ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -303,7 +302,7 @@ def handle_callback_queries(update, context):
 
     # Handling assignment selection callback
     if callback_query.data == 'proceed_to_code_submission':
-        callback_query.message.reply_text("Awesome! 🛠️ Time to get those gears turning. Please go ahead and send me your working code when you're ready.\nI’m excited to see what you've got! 🚀💡")
+        callback_query.message.reply_text("Please go ahead and send me your working code when you're ready!\n(Just simply copy and paste your code directly from your IDE 📋)")
         return ASK_CODE_SUBMISSION
 
     # Handling code submission callback
