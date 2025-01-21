@@ -7,6 +7,7 @@ from firebase_admin import db
 import firebase_admin
 import datetime
 
+from autograder import AutoGrader
 
 # Initiating Chatbase stuffs
 url = 'https://www.chatbase.co/api/v1/chat'
@@ -73,8 +74,6 @@ else:
 
     for i in range(len(database_data_assignments)):
         list_of_assignments.append(f"{database_data_assignments[i]['assignment_name']}")
-
-
 
 
 # ////////////////////////////////////////////////////////////////////////////////////
@@ -145,13 +144,36 @@ ASK_STUDENTID, ASK_ASSIGNMENT, ASK_CODE_SUBMISSION = range(3)
 # 3 rquired information, student ID, selected assignment, and code to be submitted
 CONVERSATION_INFORMATION = {} 
 
+username = 'placeholder'
+user_id = 'placeholder'
 
 def handle_start_command_python_function(update, context):
     print("Start command received")  # Add this line to verify if the command is being received
 
+    global username
+    global user_id
     username = update.message.from_user.username or update.message.from_user.first_name
     user_id = update.message.from_user.id
     
+    # Clear conversation information (if applicable)
+    CONVERSATION_INFORMATION.clear()
+
+    # Send the response with MarkdownV2
+    message = f"""Hello [@{username}](tg://user?id={user_id})\!\nI am CodeBuddy\, your friendly teaching assistant for your programming course\, powered by the magic of Retrieval\-Augmented Generation \(RAG\) by Snowflake Cortex Search and Mistral LLM\! ❄️ \n\nTo begin\, please enter your student ID\."""
+
+    update.message.reply_text(
+        message,
+        parse_mode="MarkdownV2"
+    )
+    
+    return ASK_STUDENTID
+
+def handle_restart_python_function(update, context):
+    print("Start command received")  # Add this line to verify if the command is being received
+
+    global username
+    global user_id
+
     # Clear conversation information (if applicable)
     CONVERSATION_INFORMATION.clear()
 
@@ -201,8 +223,9 @@ def handle_ask_studentid_messages_python_function(update, context):
     
     return ASK_ASSIGNMENT
 
-
-# Asking of the assignment information
+########################################
+# Asking of the assignment information #
+########################################
 def handle_ask_assignment_messages_python_function(update, context):
     assignment = update.message.text
     CONVERSATION_INFORMATION['assignment'] = assignment
@@ -211,21 +234,22 @@ def handle_ask_assignment_messages_python_function(update, context):
     inline_keyboard_buttons = [[telegram.InlineKeyboardButton("Proceed to code submission", callback_data="proceed_to_code_submission")]]
 
     # To extract the assignment link for the extracted assignment name in the 'list_of_assignments' list
-    extracted_assignment_link = None
+    extracted_assignment_notes = None
 
     for assignment in database_data_assignments:
         if assignment['assignment_name'] == CONVERSATION_INFORMATION['assignment']:
-            extracted_assignment_link = assignment['assignment_link']
+            extracted_assignment_notes = assignment['assignment_notes']
 
     update.message.reply_text(f"""                               
-                               To refresh your memory, here is the question for {CONVERSATION_INFORMATION['assignment']}: {extracted_assignment_link}
+                               To refresh your memory, here is the question for {CONVERSATION_INFORMATION['assignment']}:\n<pre><code>{extracted_assignment_notes}</code></pre>
                                """
-                               , reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True))
+                               , parse_mode="HTML", reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True))
 
     return ASK_CODE_SUBMISSION
 
-
-# Confirmation of all 3 information (student id, assignment and code submitted) before submission
+###################################################################################################
+# Confirmation of all 3 information (student id, assignment and code submitted) before submission #
+###################################################################################################
 def handle_ask_code_submission_messages_python_function(update, context):
     code_submitted = update.message.text  
     CONVERSATION_INFORMATION['code_submitted'] = code_submitted
@@ -241,9 +265,14 @@ def handle_ask_code_submission_messages_python_function(update, context):
                                    Code received! Please confirm your submission:\n- Student ID: {CONVERSATION_INFORMATION['student_id']}\n- Assignment: {CONVERSATION_INFORMATION['assignment']}\n- Submitted Code:\n<pre><code>{CONVERSATION_INFORMATION['code_submitted']}</code></pre>
                                    """, reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True), parse_mode="HTML")
 
-
-# Displaying response 
+#######################
+# Displaying response #
+#######################
 def telegram_chatbot_response_to_code_submission_python_function(update, context):
+
+    ################################
+    # Generate Chatbase's response #
+    ################################
     # Appending the user message/prompt to the 'conversation_history_and_other_data' before making the API call
     conversation_history_and_other_data["messages"].append({"content": update.message.text, "role": "user"})
 
@@ -258,11 +287,19 @@ def telegram_chatbot_response_to_code_submission_python_function(update, context
 
         inline_keyboard_buttons = [[telegram.InlineKeyboardButton("Restart", callback_data="restart")]]
         update.message.reply_text(f"""
-                                  Here’s my feedback for your submission to {CONVERSATION_INFORMATION['assignment']}.<pre><code>{json_data['text']}</code></pre>(Your submission has been recorded into the Streamlit website: http://websitenotready which is only accessible by your course instructors)
+                                  Here’s my feedback for your submission to {CONVERSATION_INFORMATION['assignment']}.<pre><code>{json_data['text']}</code></pre>(Your submission has been recorded into the Streamlit website: https://27-codebuddy-app-website-epgyqtybxho9kbdcussvyt.streamlit.app/ which is only accessible by your course instructors)
                                   """, parse_mode="HTML", reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True))    
         
 
-        # ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ###############
+    # Autograding #
+    ###############
+        grader = AutoGrader()
+        results = grader.run_test_cases(database_data_assignments[CONVERSATION_INFORMATION['assignment']]['test_cases'], CONVERSATION_INFORMATION['code_submitted'])
+        CONVERSATION_INFORMATION['scores'] = results
+
+
+    # ////////////////////////////////////////////////////////////////////////////////////////////////////////
         
 
         # Telegram Chatbot to Firebase's Realtime Database things
@@ -290,12 +327,12 @@ def telegram_chatbot_response_to_code_submission_python_function(update, context
     else:
         print(f"Error: {json_data}")
         update.message.reply_text(f"CodeBuddy Bot: Oh no! You encountered an error in the code! The error is: \n'{json_data['message']}'")
-        
     
     return telegram.ext.ConversationHandler.END
 
-
-# Handling callback queries from the Inline Keyboard Buttons
+##############################################################
+# Handling callback queries from the Inline Keyboard Buttons #
+##############################################################
 def handle_callback_queries(update, context):
     callback_query = update.callback_query
     callback_query.answer()
@@ -311,7 +348,7 @@ def handle_callback_queries(update, context):
 
     # Handling restart submission callback
     elif callback_query.data == 'restart':
-        handle_start_command_python_function(callback_query, context)
+        handle_restart_python_function(callback_query, context)
         return ASK_STUDENTID
 
 # Cancel function here to map to the cancel command as per required by the telegram Python library's 

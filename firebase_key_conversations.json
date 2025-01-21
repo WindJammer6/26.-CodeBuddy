@@ -1,14 +1,13 @@
 {
-    "type": "service_account",
-    "project_id": "urop-telegram-chatbot",
-    "private_key_id": "3209af851f5a2b15d0ac1f25ba409d3566d5e988",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCRmrUB++pjC2ZR\nDsVPxBThXm79nIJmuvE4fMsO+BQhCjGfxIVbOVA+WXtASKNlK6FZ9awb9TnTx33l\nCHD1b9u3pEYMgaPYHOVkcFxLppyvAbd/PeawoG8WjSJq+r/zj6vVKOGM6UbbWFOy\nIONMFhjnwvbDCq24CK+j9uhRvTxBCnO/Aq2AhKmSl7CaAmG1VgIfF2u6+Dnc6AZu\ntRGULuN0/AUawLzxDdaqCE7vfAzxa85zvFHDj8+tzRypBKiRPl1jNFBVvAsfonob\nwUfi8f5zhOGA2nvfjGitZpuqUz+CJdfv4GXrKBLVrqJSDmMfm85cDGV8hpgoHzKm\nbLMkVAm9AgMBAAECggEAAIBZios1MGgepGgk8nReD19FieawZZgpMnpDh2aqnb6C\nPebtqqBqOqdmOZTGc0JmM4AZZUiVOA8iINgZmM7CIUIV4lR5SEo5LqewZFZLiH1n\nW1nO4eF7ixwAoqurCN9VcSN15gf7ms/ADLH49mRxFi3hWaSUxTh1Gl8ZnQZwyayK\nimjebwHm/z6zgBS1erDE+1S2YnRTrlOYCv+prLAImWFihA0dwu3zj7VOYBmW1pPX\nnji+38BvXMZoUWrZl2ZnzadqtS9TFTJqBhjGCVsgwfU1g0gD10WDEfzaPxQmv0+D\nSHpFuf1BhFhrh1JMVx+kqWz3/Vp2q3PCmqpkdF6bRQKBgQC1EuF6bRXgY/B0qBKv\npVM8LPaLBF8qJNxt5ouH+md/W2LuEor5apPnva0AUYR1ZHxB4oSIcU37lq0wXRCE\nVvp9vVIgxb5PgKo7/0nLwhjrWGflT4Y6okOvZKBrjorz+HW4pXbRQdUh/VYbeUZF\niYYjcOO7I7Sc50YTW47shbSPawKBgQDN2o3nNdclqMGdX7zEhDIIwzU97J71Q6UU\nRG5Z75G/hKEmCoShEBECmC6Xg+ptY1Mn6OlnMoViyd4Fc9iHBDHe0wKsbAgEY2qR\nenmaO4JaGUKkqhzobgqzC5pvtr8J+VJtMrc+57yfno/gwkozav7YN5V59TvViPaN\nmqhSbELddwKBgQCbkbcrKeGrwfFrKKO1SMM0ZiUD1yOz36uKuJKUpyyYnPloNYI1\nO74LUkj6hw7YlRa0vFrFpyMqzo/Jh4uTR+86bJfNFFenkpGvrmvGpeInAPNyblqS\nsaqZXEj/X54+ce8iTvbAXmExLKj4Pb+EKt2WQX1G4SxhycnJA9bNmypANQKBgGdx\njV+DkcLt46WWp4BFQfNfTRD6KALt5DWkEaQGHEKWfnhkTrO1JCcenEMtWg9wGyhy\nBWADZj33XSd2SHfIptrnRG+qtfimkLXcSuEzSFTIXtHqXi56pcvFZ+z9c1Cqxj3z\nf1wQDZxUjM6QM8NU4A19GRM5JcEvW15bOnx4xL0PAoGAL1ev81Z11I9Hx/VLToqE\n47eVPXsnNrM9+wsUl890DOWN7G+C4ARHbr7xRVuVwEkgX6szd7U6QA/GRPL12zIg\nvoA8YcDcolXj9BKvshuXI702JTrk2eyCioHSderhz48KCh52AFZYdjfb7HaHidGf\nNZBSeCzfG/ULohL/g7REmss=\n-----END PRIVATE KEY-----\n",
-    "client_email": "firebase-adminsdk-rvtdl@urop-telegram-chatbot.iam.gserviceaccount.com",
-    "client_id": "108928779375842545414",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rvtdl%40urop-telegram-chatbot.iam.gserviceaccount.com",
-    "universe_domain": "googleapis.com"
-  }
-  
+  "type": "service_account",
+  "project_id": "urop-telegram-chatbot",
+  "private_key_id": "6353a738eb0e3ab6dbbf3b1f28aed5ec26a62d8f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC6dTm7mACvUjAq\n0i88K0bxMRCNsLH8HY3bTpKyVhj9KTNXbwIxVaIvMcXdmEHMJA6lDoFG3P0otuT/\nwrJstiMIJiIdoB8Ev2C1i7OexzQf8ufAx3paBLhDJwspcBurpICRQzGxiGcuNITV\nnAKYdgUY2ovyNmkav1ScCuVOz+hl/enN7OHcqqv9gJYpooaj9zYd6pI1C+Zxy6PK\n6BPfbwsrwkSnJ0rdkCqdKkjk/lTCblsLDpGAousqsOyNAyH/qURDSaTy9HaGCTOx\nmxacK3p7+NnvopZVAYpme/+eE6NfsAu/mjN1BPIhIFrDmc1yd9O7JGLTUosg8nxQ\nqPzFqqq7AgMBAAECggEANGuqnIQChUfNBOzsnLTqD/skVUF8+I1yiVqQwZSVF++S\nYJ1z91zE6RHMOB2LOhJVD7CBRePxRJYO0ZzyPsACH1NhOgT/U31eegvZpuUIUYcg\nAsHSMyaqiy6Z47+B+AKaprxGZ0wa/hGD2u4uiKB9lFw1Bhan+/4Ykno5t6uaAboh\nuggt2XZLf/UVVfxePQDTB7FcErKCrQWOqzo2Sll7Y5CKaKtrLOjdC/0C9BCv8k/5\n7R5WSSM9wBi5btUFh72+tCXNt9gtSSgBXZwMQcycZ6XG0XvziOffUe09Da/W9Ikp\ngq+DvBCiIxO5lr9eXJeUIGTe6bzRs6NVSiqTs4B8aQKBgQC6xumMtQJDWQ7rL4Nc\nQuM//kBDqz/0Qxk/FCdN+baovtljYS0C/m+2KdCZefLgGtSy1s7WjrVDRDm98jQp\nVWRO7vtMyZf5uX9p4q5w0xwo7rN4HMiU8mr8bfHWFlEEUpCbIBvNzYb/gTaV/jhY\nMqF8gaa6yu0bwZvWWazXFz/i/QKBgQD/kAng4S9EHHCYDV6Ioc9djv5pU089ns49\n2toKEXZV0qE99VoqojplWYUwTKKqbNQ3tzKi5sqzHz6R4ntvQU8b2G64OxBcC7mQ\nJyH5qqW4VlhJHb6M3uEw3my/oUkJ1it1LrNXh50YfYNcAKBCE+QO5FVjBqKpGKiK\noMYEcgQ+FwKBgQCxmOoCLStVtp0E7EzPsZo8AxpAPdm1/QdIf3VQI52XnsE+Sexu\n6Fh4shHznY1foqOU2cQbJ98bcwgkoOUQWG3k0ECLpzSm88c/e5e7GEGyeiaUk2n2\nlvs7w58snlOy9H8jwcguTLuMv+STgwM4egwrQ2yyOLp0pgf0LZi3fRf2UQKBgCMX\nfTPC2AGrQg6u70clqNq48tg1l1DnyHwX3A673RrlxDxEv2/RPOGDzFUYgNGUBgPs\nhOh3dmfoJ2hSyA470ogJTRLBEXsCJSXVKcYll4HbYV4Q1oRzakqSkC40EFpobSk3\nE2s2dOzS90Gf2GGaZ5tf4RWq6JT9jM8USnx7x3dbAoGBAKEty9GEOK5kicP5aJ+Z\nCVMKAvKQ+yDFE3ETOE6VYAhWnOQHwQLhENd9iLCeKxsZMXkutBUw7tw26Se3QUd3\nvY65sveFlhlvxbc1zD35M4x2FbF2L7Nl+BPEG7mBrHawt3mp0LmLcjshWAJNcx1c\ncdNnWdLjtVrCjiN4b5xNK7sG\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-rvtdl@urop-telegram-chatbot.iam.gserviceaccount.com",
+  "client_id": "108928779375842545414",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rvtdl%40urop-telegram-chatbot.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
