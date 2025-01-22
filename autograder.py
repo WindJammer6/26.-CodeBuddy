@@ -1,49 +1,61 @@
-# Assumes the student's code submission is wrapped in a function and is complete (dosen't cause any syntax errors) 
-
 class AutoGrader:
     def run_test_cases(self, test_cases, student_function):
         """
-        Run all test cases on the student function, accommodating nested dictionaries.
+        Run all test cases on the student function, accommodating flat dictionaries.
         """
         score = 0
         total = len(test_cases)
 
-        for i, test in enumerate(test_cases, start=1):
-            # Extract the single key-value pair from the dictionary
-            test_id, test_data = list(test.items())[0]
+        print(test_cases)
 
-            input_data = test_data["input"]
-            expected = test_data["expected output"]
+        result_feedback = ""
+
+        # Create a namespace to safely execute the student's function
+        namespace = {}
+        try:
+            exec(student_function, namespace)
+            # Extract the function from the namespace
+            student_function = namespace["factorial"]
+        except Exception as e:
+            return f"Error in student code: {e}"
+
+        for i, test in enumerate(test_cases, start=1):
+            input_data = int(test["input"])  # Convert input to integer
+            expected = int(test["expected_output"])  # Convert expected output to integer
 
             try:
                 result = student_function(input_data)
+                
                 if result == expected:
-                    print(f"Test {test_id}: Passed ✅ (Input: {input_data}, Expected: {expected}, Got: {result})")
+                    result_feedback += f"- Test {i}: Passed ✅ (Input: {input_data}, Expected: {expected}, Got: {result})\n"
                     score += 1
                 else:
-                    print(f"Test {test_id}: Failed ❌ (Input: {input_data}, Expected: {expected}, Got: {result})")
+                    result_feedback += f"- Test {i}: Failed ❌ (Input: {input_data}, Expected: {expected}, Got: {result})\n"
             except Exception as e:
-                print(f"Test {test_id}: Error ❌ (Input: {input_data}, Expected: {expected}, Got: {e})")
+                result_feedback += f"- Test {i}: Error ❌ (Input: {input_data}, Expected: {expected}, Got: {e})\n"
 
-        print(f"\nFinal Score: {score}/{total}")
-        return score
+        result_feedback += f"\nFinal Score: {score}/{total}"
+
+        return result_feedback
 
 
 if __name__ == '__main__':
-    def student_submission(n):
-        """
-        Example of a student submission.
-        This function has a deliberate bug for demonstration purposes.
-        """
-        if n == 0:
-            return 1
-        return n * n  # Bug: Incorrect factorial logic
+    student_submission = """
+def factorial(n):
+    if n == 0:
+        return 1
+    result = 1
+    for i in range(1, n + 1):
+        result *= i
+    return result
+    """
 
     test_cases = [
-        {0: {"input": 0, "expected output": 1}},
-        {1: {"input": 1, "expected output": 1}},
-        {2: {"input": 5, "expected output": 120}},
-        {3: {"input": 10, "expected output": 3628800}},
+        {'expected_output': '1', 'input': '0'},
+        {'expected_output': '1', 'input': '1'},
+        {'expected_output': '120', 'input': '5'},
+        {'expected_output': '5040', 'input': '7'},
+        {'expected_output': '3628800', 'input': '10'},
     ]
 
     # Initialize the autograder
@@ -51,4 +63,5 @@ if __name__ == '__main__':
 
     # Test the student's function
     print("Running tests on student submission...\n")
-    grader.run_test_cases(test_cases, student_submission)
+    
+    print(grader.run_test_cases(test_cases, student_submission))

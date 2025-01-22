@@ -6,23 +6,43 @@ import time
 from firebase_admin import db
 import firebase_admin
 import datetime
+from html import escape
+from mistralai import Mistral
 
 from autograder import AutoGrader
 
+# Initiating Mistral LLM stuffs
+api_key = 'mYh9wxRXIpuinbnH6jdBwZZ9Dzxx2KEo'
+model = "mistral-large-latest"
+
+client = Mistral(api_key=api_key)
+
+# conversation_history_and_other_data = client.chat.complete(
+#     model= model,
+#     messages = [
+#         {
+#             "role": "user",
+#             "content": "placeholder message",
+#         },
+#     ]
+# )
+# print(conversation_history_and_other_data.choices[0].message.content)
+
+
 # Initiating Chatbase stuffs
-url = 'https://www.chatbase.co/api/v1/chat'
+# url = 'https://www.chatbase.co/api/v1/chat'
 
-headers = {
-    'Authorization': 'Bearer 3c7b798b-c5fe-41a7-bdeb-f5d0b6f8536e',
-    'Content-Type': 'application/json'
-}
+# headers = {
+#     'Authorization': 'Bearer 3c7b798b-c5fe-41a7-bdeb-f5d0b6f8536e',
+#     'Content-Type': 'application/json'
+# }
 
-conversation_history_and_other_data = {
-    "messages": [],
-    "chatbotId": "7d1-P8B5N9cnZdXkxOwFB",
-    "stream": False,
-    "temperature": 0
-}
+# conversation_history_and_other_data = {
+#     "messages": [],
+#     "chatbotId": "7d1-P8B5N9cnZdXkxOwFB",
+#     "stream": False,
+#     "temperature": 0
+# }
 
 
 # Initiating multiple Firebase Realtime Database/projects in the same Python file
@@ -273,61 +293,74 @@ def telegram_chatbot_response_to_code_submission_python_function(update, context
     ################################
     # Generate Chatbase's response #
     ################################
+    conversation_history_and_other_data = client.chat.complete(
+        model= model,
+        messages = [
+            {
+                "role": "user",
+                "content": f"{update.message.text}",
+            },
+        ]
+    )
     # Appending the user message/prompt to the 'conversation_history_and_other_data' before making the API call
-    conversation_history_and_other_data["messages"].append({"content": update.message.text, "role": "user"})
+    # conversation_history_and_other_data.append({"content": update.message.text, "role": "user"})
 
     # Generating the response to the user message/prompt when making the API call
-    response = requests.post(url, headers=headers, data=json.dumps(conversation_history_and_other_data))
-    json_data = response.json()
+    json_data = conversation_history_and_other_data.choices[0].message.content
 
-    # If there is no error generating response
-    if response.status_code == 200:
-        # Appending the generated response to the 'conversation_history_and_other_data' 
-        conversation_history_and_other_data["messages"].append({"content": json_data['text'], "role": "assistant"})
+    # Appending the generated response to the 'conversation_history_and_other_data' 
+    # conversation_history_and_other_data.append({"content": json_data['text'], "role": "assistant"})
 
-        inline_keyboard_buttons = [[telegram.InlineKeyboardButton("Restart", callback_data="restart")]]
-        update.message.reply_text(f"""
-                                  Here’s my feedback for your submission to {CONVERSATION_INFORMATION['assignment']}.<pre><code>{json_data['text']}</code></pre>(Your submission has been recorded into the Streamlit website: https://27-codebuddy-app-website-epgyqtybxho9kbdcussvyt.streamlit.app/ which is only accessible by your course instructors)
-                                  """, parse_mode="HTML", reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True))    
-        
+    inline_keyboard_buttons = [[telegram.InlineKeyboardButton("Restart", callback_data="restart")]]
+
+    safe_text = escape(json_data)
+
+    update.message.reply_text(f"""
+                                Here’s my feedback for your submission to {CONVERSATION_INFORMATION['assignment']}.<pre><code>{safe_text}</code></pre>(Your submission has been recorded into the Streamlit website: https://27-codebuddy-app-website-epgyqtybxho9kbdcussvyt.streamlit.app/ which is only accessible by your course instructors)
+                                """, parse_mode="HTML")    
 
     ###############
     # Autograding #
     ###############
-        grader = AutoGrader()
-        results = grader.run_test_cases(database_data_assignments[CONVERSATION_INFORMATION['assignment']]['test_cases'], CONVERSATION_INFORMATION['code_submitted'])
-        CONVERSATION_INFORMATION['scores'] = results
+    grader = AutoGrader()
+
+    test_cases_for_assignment = None
+    for assignment in database_data_assignments:
+        if assignment['assignment_name'] == CONVERSATION_INFORMATION['assignment']:
+            test_cases_for_assignment = assignment['test_cases']
+
+    print(f'These are the test cases: {test_cases_for_assignment}')
+    print(f"This is the code submitted: {CONVERSATION_INFORMATION['code_submitted']}")
+    
+    results = grader.run_test_cases(test_cases_for_assignment, CONVERSATION_INFORMATION['code_submitted'])
+    CONVERSATION_INFORMATION['scores'] = results
+
+    update.message.reply_text(f"""
+                                <pre><code>{results}</code></pre>
+                                """, parse_mode="HTML", reply_markup=telegram.InlineKeyboardMarkup(inline_keyboard_buttons, one_time_keyboard=True))    
 
 
     # ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-
-        # Telegram Chatbot to Firebase's Realtime Database things
-
-        # Adding response to each submission into each submission data
-        CONVERSATION_INFORMATION['telegram_chatbot_chatbase_response'] = f"```\n{json_data['text']}\n```"
-        print(CONVERSATION_INFORMATION)
-
-
-        # Adding date and time information of the submission to each submission data
-        date_and_time_of_submission = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        CONVERSATION_INFORMATION['date_and_time_of_submission'] = date_and_time_of_submission
-        print(CONVERSATION_INFORMATION)
-
-
-        # Once the code is submitted by the user, the Telegram Chatbot will 'push' basically add these new pieces of user data 
-        # into the Realtime database in Firebase
-        reference_to_database_conversations.push(CONVERSATION_INFORMATION)    
-
-
-        # ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-
-    # If there is an error when generating the response for some reason
-    else:
-        print(f"Error: {json_data}")
-        update.message.reply_text(f"CodeBuddy Bot: Oh no! You encountered an error in the code! The error is: \n'{json_data['message']}'")
     
+
+    # Telegram Chatbot to Firebase's Realtime Database things
+
+    # Adding response to each submission into each submission data
+    # CONVERSATION_INFORMATION['telegram_chatbot_chatbase_response'] = f"```\n{json_data['text']}\n```"
+    CONVERSATION_INFORMATION['telegram_chatbot_chatbase_response'] = f"```\n{json_data}\n```"
+    print(CONVERSATION_INFORMATION)
+
+
+    # Adding date and time information of the submission to each submission data
+    date_and_time_of_submission = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    CONVERSATION_INFORMATION['date_and_time_of_submission'] = date_and_time_of_submission
+    print(CONVERSATION_INFORMATION)
+
+
+    # Once the code is submitted by the user, the Telegram Chatbot will 'push' basically add these new pieces of user data 
+    # into the Realtime database in Firebase
+    reference_to_database_conversations.push(CONVERSATION_INFORMATION)    
+
     return telegram.ext.ConversationHandler.END
 
 ##############################################################
