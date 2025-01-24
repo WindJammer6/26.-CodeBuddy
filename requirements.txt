@@ -1,5 +1,8 @@
 firebase_admin
-python-telegram-bot==13.3
+python-telegram-bot==13.11  # Change to a stable version
+urllib3==1.26.6             # Ensure compatibility with python-telegram-bot
+datetime
+time
 mistralai
+html
 flask
-urllib3
