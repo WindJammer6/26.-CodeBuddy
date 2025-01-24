@@ -8,8 +8,10 @@ import firebase_admin
 import datetime
 from html import escape
 from mistralai import Mistral
+import os
 
 from autograder import AutoGrader
+
 
 # Initiating Mistral LLM stuffs
 api_key = 'mYh9wxRXIpuinbnH6jdBwZZ9Dzxx2KEo'
@@ -48,9 +50,11 @@ client = Mistral(api_key=api_key)
 # Initiating multiple Firebase Realtime Database/projects in the same Python file
 
 # Setting up the Firebase database for the conversations:
+fb_credentials = json.loads(os.getenv('FIREBASE_DB_CONVERSATIONS'))
+
 if "conversations" not in firebase_admin._apps:
     # Initialize Firebase
-    credentials_object_conversations = firebase_admin.credentials.Certificate("firebase_key_conversations.json")
+    credentials_object_conversations = firebase_admin.credentials.Certificate(fb_credentials)
     firebase_admin.initialize_app(credentials_object_conversations, {
         'databaseURL': 'https://urop-telegram-chatbot-default-rtdb.asia-southeast1.firebasedatabase.app/'
     }, name='conversations')
@@ -61,9 +65,11 @@ reference_to_database_conversations = db.reference('/', app=firebase_admin.get_a
 
 
 # Setting up the Firebase database for the assignments:   
+fb_credentials2 = json.loads(os.getenv('FIREBASE_DB_ASSIGNMENTS'))
+
 if "assignments" not in firebase_admin._apps:
     # Initialize Firebase
-    credentials_object_assignments = firebase_admin.credentials.Certificate("firebase_key_assignments.json")
+    credentials_object_assignments = firebase_admin.credentials.Certificate(fb_credentials2)
     firebase_admin.initialize_app(credentials_object_assignments, {
         'databaseURL': 'https://urop-chatbot-assignments-default-rtdb.asia-southeast1.firebasedatabase.app/'
     }, name='assignments')
@@ -395,7 +401,7 @@ def cancel(update, context):
 
 
 # Initiate the Telegram Chatbot
-token_of_telegram_bot = "7665259187:AAHg986wLOXoMKDJStpTMV0LEME6thvQ-ZA"
+telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
 updater = telegram.ext.Updater(token_of_telegram_bot, use_context=True)
 dispatcher = updater.dispatcher
 
