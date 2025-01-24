@@ -14,10 +14,10 @@ from autograder import AutoGrader
 
 
 # Initiating Mistral LLM stuffs
-mistral_api_key = 'mYh9wxRXIpuinbnH6jdBwZZ9Dzxx2KEo'
+mistralai_api_key = 'mYh9wxRXIpuinbnH6jdBwZZ9Dzxx2KEo'
 model = "mistral-large-latest"
 
-client = Mistral(api_key=api_key)
+client = Mistral(api_key=mistralai_api_key)
 
 # conversation_history_and_other_data = client.chat.complete(
 #     model= model,
