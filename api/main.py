@@ -10,51 +10,20 @@ from firebase_admin import db, credentials, initialize_app
 import datetime
 from mistralai import Mistral
 
-
-class AutoGrader:
-    def run_test_cases(self, test_cases, student_function):
-        """
-        Run all test cases on the student function, accommodating flat dictionaries.
-        """
-        score = 0
-        total = len(test_cases)
-
-        print(test_cases)
-
-        result_feedback = ""
-
-        # Create a namespace to safely execute the student's function
-        namespace = {}
-        try:
-            exec(student_function, namespace)
-            # Extract the function from the namespace
-            student_function = namespace["factorial"]
-        except Exception as e:
-            return f"Error in student code: {e}"
-
-        for i, test in enumerate(test_cases, start=1):
-            input_data = int(test["input"])  # Convert input to integer
-            expected = int(test["expected_output"])  # Convert expected output to integer
-
-            try:
-                result = student_function(input_data)
-                
-                if result == expected:
-                    result_feedback += f"- Test {i}: Passed ✅ (Input: {input_data}, Expected: {expected}, Got: {result})\n"
-                    score += 1
-                else:
-                    result_feedback += f"- Test {i}: Failed ❌ (Input: {input_data}, Expected: {expected}, Got: {result})\n"
-            except Exception as e:
-                result_feedback += f"- Test {i}: Error ❌ (Input: {input_data}, Expected: {expected}, Got: {e})\n"
-
-        result_feedback += f"\nFinal Score: {score}/{total}"
-
-        return result_feedback
-
+from autograder import AutoGrader
 
 # Flask app for Vercel
 app = Flask(__name__)
 
+# Setting up the '/webhook' route 
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        # Process the incoming request
+        update = telegram.Update.de_json(request.get_json(), bot)
+        bot.process_new_updates([update])
+        return 'OK'
+        
 # Telegram bot token and webhook URL
 telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
 webhook_url = os.getenv('WEBHOOK_URL')  # Example: https://your-vercel-deployment-url.com/webhook
