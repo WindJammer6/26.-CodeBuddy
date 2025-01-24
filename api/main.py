@@ -5,6 +5,7 @@ import telegram.ext
 from telegram import Update
 from telegram.ext import CallbackContext, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, ConversationHandler
 from flask import Flask, request, jsonify
+import firebase_admin
 from firebase_admin import db, credentials, initialize_app
 import datetime
 from mistralai import Mistral
