@@ -1,2 +1,2 @@
 # 26.-CodeBuddy
-secrets api keys on vercel too
+secrets environmental variables api keys on vercel too
