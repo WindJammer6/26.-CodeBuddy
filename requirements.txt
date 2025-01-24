@@ -1,3 +1,7 @@
 firebase_admin
 python-telegram-bot==13.3
 telegram.ext
+datetime
+time
+mistralai
+html
