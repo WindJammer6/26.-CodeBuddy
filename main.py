@@ -14,7 +14,7 @@ from autograder import AutoGrader
 
 
 # Initiating Mistral LLM stuffs
-api_key = 'mYh9wxRXIpuinbnH6jdBwZZ9Dzxx2KEo'
+mistral_api_key = 'mYh9wxRXIpuinbnH6jdBwZZ9Dzxx2KEo'
 model = "mistral-large-latest"
 
 client = Mistral(api_key=api_key)
