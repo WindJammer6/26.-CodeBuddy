@@ -1,5 +1,5 @@
 # 26.-CodeBuddy
-This Github repository is hosting the Telegram Bot for CodeBuddy, for the [Devpost](https://devpost.com/) hackathon titled: '[RAG 'n' ROLL Amp up Search with Snowflake & Mistral Hackathon](https://snowflake-mistral-rag.devpost.com/)'. 
+This Github repository is hosting the Telegram Bot for CodeBuddy, for my submission for the [Devpost](https://devpost.com/) hackathon titled: '[RAG 'n' ROLL Amp up Search with Snowflake & Mistral Hackathon](https://snowflake-mistral-rag.devpost.com/)'. 
 
 See the full explanation for the purpose of this Github repository in the main submission Github repository of CodeBuddy for the [RAG 'n' ROLL Amp up Search with Snowflake & Mistral Hackathon](https://snowflake-mistral-rag.devpost.com/) [here](https://github.com/WindJammer6/27.-CodeBuddy-Streamlit-Website).
 
