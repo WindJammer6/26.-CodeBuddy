@@ -3,5 +3,8 @@ python-telegram-bot==13.11  # Change to a stable version
 urllib3==1.26.6             # Ensure compatibility with python-telegram-bot
 mistralai
 flask
-# ast
-# inspect
+ast
+inspect
+setuptools
+wheel
+cython
