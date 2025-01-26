@@ -422,22 +422,10 @@ def webhook_handler():
 # Telegram dispatcher setup
 dispatcher = telegram.ext.Dispatcher(bot, None, workers=0)
 
-conversation_handler = ConversationHandler(
-    entry_points=[CommandHandler('start', handle_start_command)],
-    states={
-        ASK_STUDENTID: [MessageHandler(Filters.text & ~Filters.command, handle_ask_studentid)],
-        ASK_ASSIGNMENT: [MessageHandler(Filters.text & ~Filters.command, handle_ask_assignment)],
-        ASK_CODE_SUBMISSION: [MessageHandler(Filters.text & ~Filters.command, handle_ask_code_submission)]
-    },
-    fallbacks=[CommandHandler('cancel', cancel)]
-)
-
-
 # Initiate the Telegram Chatbot
 telegram_bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
 updater = telegram.ext.Updater(token_of_telegram_bot, use_context=True)
 dispatcher = updater.dispatcher
-
 
 # Handlers
 conversation_handler = telegram.ext.ConversationHandler(
